@@ -10,10 +10,11 @@ import {
 import { PokemonService } from './pokemon.service';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
+import { ParseMongoIdPipe } from '../common/pipes/parse-mongo-id.pipe';
 
 @Controller('pokemon')
 export class PokemonController {
-  constructor(private readonly pokemonService: PokemonService) {}
+  constructor(private readonly pokemonService: PokemonService) { }
 
   @Post()
   create(@Body() createPokemonDto: CreatePokemonDto) {
@@ -36,7 +37,7 @@ export class PokemonController {
   }
 
   @Delete(':term')
-  remove(@Param('term') term: string) {
+  remove(@Param('term', ParseMongoIdPipe) term: string) {
     return this.pokemonService.remove(term);
   }
 }
