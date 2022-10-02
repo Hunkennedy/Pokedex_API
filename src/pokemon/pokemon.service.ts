@@ -14,7 +14,7 @@ import { Pokemon } from './entities/pokemon.entity';
 export class PokemonService {
   constructor(
     @InjectModel(Pokemon.name) private readonly pokemonModel: Model<Pokemon>,
-  ) { }
+  ) {}
   async create(createPokemonDto: CreatePokemonDto) {
     createPokemonDto.name = createPokemonDto.name.toLocaleLowerCase();
     try {
@@ -32,8 +32,10 @@ export class PokemonService {
   async findOne(term: string) {
     let pokemon: Pokemon;
     if (!isNaN(+term)) pokemon = await this.pokemonModel.findOne({ no: term });
-    if (!pokemon && typeof term === 'string') pokemon = await this.pokemonModel.findOne({ name: term });
-    if (!pokemon && isValidObjectId(term)) pokemon = await this.pokemonModel.findById(term);
+    if (!pokemon && typeof term === 'string')
+      pokemon = await this.pokemonModel.findOne({ name: term });
+    if (!pokemon && isValidObjectId(term))
+      pokemon = await this.pokemonModel.findById(term);
     if (!pokemon) throw new NotFoundException(`Object with ${+term} not found`);
     return pokemon;
   }
@@ -42,7 +44,8 @@ export class PokemonService {
     const pokemon = await this.findOne(term);
     if (!pokemon) throw new NotFoundException();
     try {
-      if (updatePokemonDto.name) updatePokemonDto.name = updatePokemonDto.name.toLocaleLowerCase();
+      if (updatePokemonDto.name)
+        updatePokemonDto.name = updatePokemonDto.name.toLocaleLowerCase();
       return await pokemon.updateOne(updatePokemonDto, { new: true });
     } catch (error) {
       this.handleExceptions(error);
@@ -56,7 +59,8 @@ export class PokemonService {
   }
 
   private handleExceptions(error: any) {
-    if (error.code === 11000) throw new BadRequestException(`Cannot change the key value`);
+    if (error.code === 11000)
+      throw new BadRequestException(`Cannot change the key value`);
     throw new InternalServerErrorException(`Can't change the pokemon`);
   }
 }

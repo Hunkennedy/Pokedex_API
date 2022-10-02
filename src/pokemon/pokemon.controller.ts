@@ -14,7 +14,7 @@ import { ParseMongoIdPipe } from '../common/pipes/parse-mongo-id.pipe';
 
 @Controller('pokemon')
 export class PokemonController {
-  constructor(private readonly pokemonService: PokemonService) { }
+  constructor(private readonly pokemonService: PokemonService) {}
 
   @Post()
   create(@Body() createPokemonDto: CreatePokemonDto) {
@@ -32,7 +32,10 @@ export class PokemonController {
   }
 
   @Patch(':term')
-  update(@Param('term') term: string, @Body() updatePokemonDto: UpdatePokemonDto) {
+  update(
+    @Param('term') term: string,
+    @Body() updatePokemonDto: UpdatePokemonDto,
+  ) {
     return this.pokemonService.update(term, updatePokemonDto);
   }
 
